@@ -1,0 +1,260 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+    <title>Login: Tindahan ni ALing Kikay</title>
+</head>
+<body>
+    <div id="app">
+        <!-- navbar -->
+        <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Aling Kikay</a>
+        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+        <ul class="navbar-nav px-3">
+          <li class="nav-item text-nowrap">
+            <a class="nav-link" href="{% url 'login:lico_logout' %}">Sign out</a>
+          </li>
+        </ul>
+        </nav>
+  
+        <div class="container-fluid">
+        <div class="row">
+          <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" :class="directory=='Dashboard'?'active':''" @click="selectDirectory('Dashboard')" href="#"> 
+                    <span data-feather="home"></span>
+                    Dashboard <span class="sr-only">(current)</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" :class="directory=='Orders'?'active':''"  href="#" @click="selectDirectory('Orders')">
+                    <span data-feather="file"></span>
+                    Orders
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" :class="directory=='Products'?'active':''"  href="#" @click="selectDirectory('Products')">
+                    <span data-feather="shopping-cart"></span>
+                    Products
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" :class="directory=='Customers'?'active':''"  href="#" @click="selectDirectory('Customers')">
+                    <span data-feather="users"></span>
+                    Customers
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" :class="directory=='Reports'?'active':''"  href="#" @click="selectDirectory('Reports')">
+                    <span data-feather="bar-chart-2"></span>
+                    Reports
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" :class="directory=='Integrations'?'active':''"  href="#" @click="selectDirectory('Integrations')">
+                    <span data-feather="layers"></span>
+                    Integrations
+                  </a>
+                </li>
+              </ul>
+  
+              <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <span>Saved reports</span>
+                <a class="d-flex align-items-center text-muted" href="#">
+                  <span data-feather="plus-circle"></span>
+                </a>
+              </h6>
+              <ul class="nav flex-column mb-2">
+                <li class="nav-item">
+                  <a class="nav-link" href="#" @click="selectDirectory('Current Month')">
+                    <span data-feather="file-text"></span>
+                    Current month
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" @click="selectDirectory('Last Quarter')">
+                    <span data-feather="file-text"></span>
+                    Last quarter
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" @click="selectDirectory('Social Engagement')">
+                    <span data-feather="file-text"></span>
+                    Social engagement
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" @click="selectDirectory('Year-end Sale')">
+                    <span data-feather="file-text"></span>
+                    Year-end sale
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+         
+    <!-- end navbar -->
+    
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+          <h1 class="h2" v-text="directory"></h1>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button class="btn btn-sm btn-outline-secondary">Share</button>
+              <button class="btn btn-sm btn-outline-secondary">Export</button>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+              <span data-feather="calendar"></span>
+              This week
+            </button>
+          </div>
+        </div>
+
+        <canvas v-show= "directory.localeCompare('Dashboard')==0" class="my-4" id="myChart" width="900" height="380"></canvas>
+        
+        <!-- PRODUCTS SECTION -->
+        <div v-show="directory.localeCompare('Products')==0">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#product_form">
+            +New
+          </button>
+        <table  class="table table-striped table-light">
+            <!-- <thead v-if="!isEmpty(computed_obj)">
+                <tr>
+                    <th role="col" v-for="obj in computed_obj)"></th>
+                </tr>
+            </thead> -->
+            <thead>
+                <tr>
+                    <th :class="order.column=='id'?sortType:''" @click="sort('id')" scope="col">ID</th>
+                    <th :class="order.column=='name'?sortType:''" @click="sort('name')" scope="col">Name</th>
+                    <th class="text-right" :class="order.column=='price'?sortType:''" @click="sort('price')" scope="col">Price</th>
+                    <th class="text-right" :class="order.column=='stock'?sortType:''" @click="sort('stock')" scope="col">Stock</th>
+                    <th colspan="2" scope="col">Actions</th>
+                  </tr>
+            </thead>
+            
+            <tbody>
+                <tr v-for="product of paginateProducts">
+                    <th scope="row" v-text="product.id"></th>
+                    <td v-text="product.name"></td>
+                    <td class="text-right" v-text="product.price"></td>
+                    <td class="text-right" v-text="product.stock"></td>
+                    <td><a @click="currentData(product)" class="btn btn-warning"  :href="'#edit' + product.id" data-toggle="modal" data-target="#product_form">Edit</a></td>
+                    <td><a @click="deleteProduct(product)" class="btn btn-secondary"  :href="'#delete' + product.id" >Delete</a></td>
+                    <td></td>
+                </tr>
+
+
+            </tbody>
+
+
+        </table>
+        <!-- pagination -->
+        
+        
+            <nav aria-label="...">
+              <ul class="pagination  justify-content-center">
+                <li class="page-item" :class="{'disabled':isFirstPage}">
+                  <a @click = "prev()" class="page-link" href="#">Previous</a>
+                </li>
+                <li @click="currentPage=page" :class="currentPage===page?'active':''"
+                 class="page-item" v-for="page in pages">
+                 <a class="page-link" :href="'#page=' + page">
+                   {!page!}
+                  </a>
+                </li>
+                
+                <li class="page-item" :class="{'disabled':isLastPage}">
+                  <a @click = "next()" class="page-link" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
+        
+
+
+        <!-- modal form -->
+        <div id="product_form" class="modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">New/Edit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form v-on:submit.prevent="saveProduct()">
+                  {% csrf_token %}
+                  <!-- Product Name -->
+                  <div class="form-outline mb-4">
+                    <input v-model="product.name" type="text" id="productName" class="form-control" />
+                    <label class="form-label" for="productName">Name</label>
+                  </div>
+                
+                  <!-- Product Price -->
+                  <div class="form-outline mb-4">
+                    <input v-model="product.price" type="text" id="productPrice" class="form-control" />
+                    <label class="form-label" for="productPrice">Price</label>
+                  </div>
+
+                  <!-- Product Category-->
+                  <div class="form-outline mb-4">
+                    <select v-model="product.category" class="form-control select" id="productCategory">
+                      <option value="" disabled>--Select--</option>
+                      <option :selected="category.id==product.category"  v-for="category in categories" :value="category.id" v-text="category.name"></option>
+                    </select>
+                    <label class="form-label" for="productCategory">Price</label>
+                  </div>
+
+                  <!-- Product Stock -->
+                  <div class="form-outline mb 4">
+                    <input v-model="product.stock" type="text" id="productStock" class="form-control" />
+                    <label class="form-label" for="productStock">Stock</label>
+                  </div>
+               
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" @click.prevent="saveProduct()" class="btn btn-secondary" value="Save Changes" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end of modal form for product -->
+      </div>
+
+    </main>
+</div>
+</div>
+
+<!-- end app -->
+    </div>
+
+
+    <script src="{% static 'js/jquery.slim.min.js'%}" ></script>
+    <script src="{% static 'js/popper.min.js'%}" ></script>
+    <script src="{% static 'js/bootstrap.min.js'%}" ></script>
+    <script src="{% static 'js/axios.js'%}" ></script>
+    <script src="{% static 'js/toastr.min.js' %}"></script>
+    <script src="{% static 'js/vue.js'%}" ></script>
+    <script src="{% static 'js/chart.min.js'%}" ></script>
+    <script src="{% static 'js/feathers.min.js'%}" ></script>
+    <script src="{% static 'js/mdb.min.css' %}"></script>
+    <script src="{% static 'js/app.js'%}"></script>
+    <script>
+        feather.replace()
+    </script>
+</body>
+</html>

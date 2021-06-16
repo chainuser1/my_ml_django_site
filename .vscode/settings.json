@@ -1,0 +1,5 @@
+{
+    "git.autofetch": true,
+    "git.autoStash": true,
+    "python.pythonPath": "/home/lotus/anaconda3/envs/my_ml/bin/python"
+}

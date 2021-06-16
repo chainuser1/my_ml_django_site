@@ -1,0 +1,23 @@
+{%extends 'login/index.html' %}
+{%load static%}
+{%block title%}Register: Tindahan ni ALing Kikay{%endblock%}
+{%block content%}
+ <!-- Registeration Form -->
+ <form action="{% url 'login:lico_register' %}" method="post">
+    {%csrf_token%}
+    
+    {{form.username}}
+    {{form.email}}
+    {{form.first_name}}
+    {{form.last_name}}
+    {{form.password1}}
+    {{form.password2}}
+    <input type="submit" class="fadeIn fourth" value="Sign Up">
+</form>
+
+<!-- Remind Passowrd -->
+<div id="formFooter">
+  <a class="underlineHover" href="#">Forgot Password?</a>
+  <a class="underlineHover" href="{% url 'login:login_do' %}">Log In?</a>
+</div>
+{%endblock%}
