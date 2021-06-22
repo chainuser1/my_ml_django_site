@@ -18,6 +18,13 @@ toastr.options = {
 
 
 
+ function getFullDateTime(){
+     
+   var today = new Date();
+   var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+   return date+' '+time;
+}
 const hostname = window.location.origin + window.location.pathname
 
 
@@ -54,17 +61,21 @@ var c = new Vue({
         errors: {},
         isEdit:false,
 
-       
-       
+      //  logs here
+      trans:[],
+
+      
+      
+
    },
    mounted(){
         
         this.fetchProducts(); 
         this.fetchCategories();
+        this.fetchLogs();
    },
    computed:{
    
-     
 
       pages(){
          return Math.ceil(this.products.length/this.perPage)
@@ -232,6 +243,13 @@ var c = new Vue({
          this.active=1
        },
 
+       fetchLogs(){
+         axios.get(hostname+'logs').
+         then((response) => {
+               this.trans = response.data.logs
+         })
+       }
+       ,
 
        isEmpty(obj){
          for(var key in obj){

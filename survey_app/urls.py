@@ -24,4 +24,5 @@ urlpatterns = [
     path('product/<int:id>/update', views.update),
     path('product/<int:id>/delete', views.delete),
     path('categories/',views.categories),
+    path('logs/',views.show_logs,name='transactions_list'),
 ]

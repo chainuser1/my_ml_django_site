@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
     <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
-    <title>Login: Tindahan ni ALing Kikay</title>
+    <title>Tindahan ni ALing Kikay</title>
 </head>
 <body>
     <div id="app">
@@ -61,9 +61,9 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" :class="directory=='Integrations'?'active':''"  href="#" @click="selectDirectory('Integrations')">
+                  <a class="nav-link" :class="directory=='Logs'?'active':''"  href="#" @click="selectDirectory('Logs')">
                     <span data-feather="layers"></span>
-                    Integrations
+                    Logs
                   </a>
                 </li>
               </ul>
@@ -120,7 +120,7 @@
             </button>
           </div>
         </div>
-
+        <!-- Data Section -->
         <canvas v-show= "directory.localeCompare('Dashboard')==0" class="my-4" id="myChart" width="900" height="380"></canvas>
         
         <!-- PRODUCTS SECTION -->
@@ -233,6 +233,28 @@
           </div>
         </div>
         <!-- end of modal form for product -->
+
+
+      </div>
+
+      <!-- Logs -->
+      <div v-show="directory.localeCompare('Logs')==0">
+        <table class="table table-hover">
+          <thead>
+            <tr class="table-dark">
+              <th scope="col">Date</th>
+              <th scope="col">Transaction</th>
+              <th scope="col">Taken By</th>
+            </tr>
+          </thead>
+          <tbody class="table-striped ">
+            <tr scope="row" v-for="log of trans">
+              <td v-text="log.created_at"></td>
+              <td v-text="log.transaction_name"></td>
+              <td v-text="log.user_id"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
     </main>

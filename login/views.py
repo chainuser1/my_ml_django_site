@@ -6,6 +6,8 @@ from django.views.decorators.cache import never_cache
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from verify_email.email_handler import send_verification_email #install https://pypi.org/project/Django-Verify-Email/
 from .forms import RegisterForm
+from django.contrib.auth.models import Group
+
 # Create your views here.
 
 @login_required(redirect_field_name='next', login_url = 'login:login_do')
@@ -59,6 +61,8 @@ def register(request):
     if(request.POST and form.is_valid()):
         try:
             inactive_user = send_verification_email(request, form)
+            my_group = Group.objects.get(name='customer') 
+            my_group.user_set.add(inactive_user)
             if("next" in request.session):
                 response=redirect(request.session["next"])
             else:

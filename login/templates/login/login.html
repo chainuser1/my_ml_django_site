@@ -6,8 +6,8 @@
  <!-- Login Form -->
  <form action="{% url 'login:lico_auth' %}" method="post">
     {%csrf_token%}
-  <input type="text" id="login" class="fadeIn second" name="username" placeholder="login">
-  <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+  <input type="text" required id="login" class="fadeIn second" name="username" placeholder="login">
+  <input type="password" required id="password" class="fadeIn third" name="password" placeholder="password">
   <input type="submit" class="fadeIn fourth" value="Log In">
 </form>
 
