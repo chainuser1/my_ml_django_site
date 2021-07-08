@@ -95,7 +95,8 @@ def show_logs(request):
 @login_required(redirect_field_name='next', login_url = 'login:login_do')
 def show_numpy_data_products(requests):
     products =  Product.objects.all()
-    vlqs = products.values_list()
+    vlqs = products.values_list('name','category_id','price','stock')
     my_list = list(vlqs)
-    r = np.array(my_list)
-    return r
+    r = np.core.records.array(my_list)
+    list1 = r.tolist()
+    return JsonResponse({0:list1}, safe=False)

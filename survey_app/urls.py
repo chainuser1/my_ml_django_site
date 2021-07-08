@@ -25,4 +25,5 @@ urlpatterns = [
     path('product/<int:id>/delete', views.delete),
     path('categories/',views.categories),
     path('logs/',views.show_logs,name='transactions_list'),
+    path('products/data/', views.show_numpy_data_products)
 ]

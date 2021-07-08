@@ -18,13 +18,7 @@ toastr.options = {
 
 
 
- function getFullDateTime(){
-     
-   var today = new Date();
-   var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-   var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-   return date+' '+time;
-}
+
 const hostname = window.location.origin + window.location.pathname
 
 
@@ -48,11 +42,11 @@ var c = new Vue({
         },
 
         product:{
-           id:0,
+           id:'',
            name:'',
-           category:0,
-           price:0,
-           stock:0,
+           category:'',
+           price:'',
+           stock:'',
         },
 
         csrf_token:$('input[name="csrfmiddlewaretoken"]').val(),
@@ -246,11 +240,28 @@ var c = new Vue({
        fetchLogs(){
          axios.get(hostname+'logs').
          then((response) => {
-               this.trans = response.data.logs
+               for(var i  = 0; i<response.data.logs.length; i++){
+                  item = response.data.logs[i]
+                  this.trans.push(item.fields)
+               }
          })
-       }
-       ,
-
+       },
+      
+       getDateEquiv(timestamps){
+          // Create a new JavaScript Date object based on the timestamp
+         // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+          var a = new Date(timestamps)
+          var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          var year = a.getFullYear();
+          var month = months[a.getMonth()];
+          var date = a.getDate();
+          var hour = a.getHours();
+          var min = a.getMinutes();
+          var sec = a.getSeconds();
+          var time = date + ' ' + month + ', ' + year + ' ' + hour + ':' + min + ':' + sec ;
+          //return the time in human readable format
+          return time;
+       },
        isEmpty(obj){
          for(var key in obj){
             if(obj.hasOwnProperty(key)){

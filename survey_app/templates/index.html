@@ -198,29 +198,32 @@
                   {% csrf_token %}
                   <!-- Product Name -->
                   <div class="form-outline mb-4">
-                    <input v-model="product.name" type="text" id="productName" class="form-control" />
-                    <label class="form-label" for="productName">Name</label>
+                    <input v-model="product.name" type="text" 
+                    id="productName" class="form-control" placeholder="Product Name" />
+                   
                   </div>
                 
                   <!-- Product Price -->
                   <div class="form-outline mb-4">
-                    <input v-model="product.price" type="text" id="productPrice" class="form-control" />
-                    <label class="form-label" for="productPrice">Price</label>
+                    <input v-model="product.price" type="text" 
+                    id="productPrice" class="form-control" placeholder="Price: ₱0.00" />
+                   
                   </div>
 
                   <!-- Product Category-->
                   <div class="form-outline mb-4">
                     <select v-model="product.category" class="form-control select" id="productCategory">
-                      <option value="" disabled>--Select--</option>
+                      <option value="" disabled selected>--Select Category--</option>
                       <option :selected="category.id==product.category"  v-for="category in categories" :value="category.id" v-text="category.name"></option>
                     </select>
-                    <label class="form-label" for="productCategory">Price</label>
+                   
                   </div>
 
                   <!-- Product Stock -->
                   <div class="form-outline mb 4">
-                    <input v-model="product.stock" type="text" id="productStock" class="form-control" />
-                    <label class="form-label" for="productStock">Stock</label>
+                    <input v-model="product.stock" type="text" 
+                    id="productStock" class="form-control" placeholder="Stocks: 0"/>
+                    
                   </div>
                
               </div>
@@ -249,9 +252,9 @@
           </thead>
           <tbody class="table-striped ">
             <tr scope="row" v-for="log of trans">
-              <td v-text="log.created_at"></td>
+              <td v-text="getDateEquiv(log.created_at)"></td>
               <td v-text="log.transaction_name"></td>
-              <td v-text="log.user_id"></td>
+              <td v-text="log.user[0]"></td>
             </tr>
           </tbody>
         </table>
