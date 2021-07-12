@@ -100,3 +100,5 @@ def show_numpy_data_products(requests):
     r = np.core.records.array(my_list)
     list1 = r.tolist()
     return JsonResponse({0:list1}, safe=False)
+   
+   
