@@ -35,6 +35,8 @@ class CartItem(models.Model):
 
     def __str__(self):
         return  self.client + " - " + self.product
+    
+
 
 
 
