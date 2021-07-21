@@ -3,6 +3,7 @@
 {%block title%}Login: Tindahan ni ALing Kikay{%endblock%}
 
 {%block content%}
+<link rel="stylesheet" href="{% static 'css/_login.css' %}">
  <!-- Login Form -->
  <form action="{% url 'login:lico_auth' %}" method="post">
     {%csrf_token%}

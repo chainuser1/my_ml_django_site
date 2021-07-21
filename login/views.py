@@ -18,7 +18,7 @@ def sign_out(request):
 
 @never_cache
 def login_do(request):
-    response = redirect('survey_app:home')
+    response = redirect('customers:home')
     if request.user.is_authenticated:
         try:
             if("next" in request.session):
@@ -32,7 +32,7 @@ def login_do(request):
 
 @never_cache
 def auth(request):
-    response = redirect('survey_app:home')
+    response = redirect('customers:home')
    
     if request.method == 'POST':
         username = request.POST['username']
@@ -55,7 +55,7 @@ def auth(request):
 @never_cache
 def register(request):
     if request.user.is_authenticated:
-        return redirect(reverse("survey_app:home"))
+        return redirect(reverse("customers:home"))
     form = RegisterForm(request.POST or None)
     response =  None
     if(request.POST and form.is_valid()):

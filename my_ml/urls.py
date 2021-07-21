@@ -19,6 +19,7 @@ import survey_app
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('survey_app.urls')),
+    path('plemba/',include('customers_site.urls')),
     path('login/', include('login.urls')),
     path('verification/', include('verify_email.urls')),
     
