@@ -25,4 +25,23 @@
     
     </div>
 
+    <script>
+        const hostname = window.location.origin + window.location.pathname
+        let options = {
+            el:"#app",
+            delimiters: ["{!","!}"],
+            data : {
+                products:{},
+                
+            },
+            computed:{
+
+            },
+            methods:{
+
+            }
+        }
+        let cl = new Vue(options)
+    </script>
+
 {% endblock %}

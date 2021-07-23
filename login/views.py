@@ -45,10 +45,11 @@ def auth(request):
                 if("next" in request.session):
                     response =  redirect(request.session["next"])
             except KeyError:
-                response = HttpResponse('I don\'t know where to go')
-        return response
+                return response
+        else:
+            response = JsonResponse({'message':'Username and password mimatched'},safe=False)
     else:
-        response = HttpResponse('Invalid request')
+        response = JsonResponse({'message':'You are not qualified to make this request'},safe=False)
     return response
 
 

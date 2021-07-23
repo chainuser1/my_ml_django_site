@@ -4,18 +4,85 @@
 
 {%block content%}
 <link rel="stylesheet" href="{% static 'css/_login.css' %}">
- <!-- Login Form -->
- <form action="{% url 'login:lico_auth' %}" method="post">
-    {%csrf_token%}
-  <input type="text" required id="login" class="fadeIn second" name="username" placeholder="login">
-  <input type="password" required id="password" class="fadeIn third" name="password" placeholder="password">
-  <input type="submit" class="fadeIn fourth" value="Log In">
-</form>
+<div id="app">
 
-<!-- Remind Passowrd -->
-<div id="formFooter">
-  <a class="underlineHover" href="#">Forgot Password?</a>
-  <a class="underlineHover" href="{% url 'login:lico_register' %}">Sign Up?</a>
+  <div v-show="message.length > 0" class="alert alert-danger alert-dismissible" 
+    
+     role="alert">
+    <strong>Sorry!</strong> {!message!}
+    <button type="button" class="close" onclick="$('.alert').hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>  
+    <!-- Login Form -->
+
+  <form  method="post" @submit.prevent = "login" >
+      {%csrf_token%}
+    <input v-model="form.username" type="text" required id="login" class="fadeIn second" placeholder="login">
+    <input v-model="form.password" type="password" required id="password" class="fadeIn third"  placeholder="password">
+    <input type="submit" class="fadeIn fourth" value="Log In">
+  </form>
+
+  <!-- Remind Passowrd -->
+  <div id="formFooter">
+    <a class="underlineHover" href="#">Forgot Password?</a>
+    <a class="underlineHover" href="{% url 'login:lico_register' %}">Sign Up?</a>
+  </div>
 </div>
 
+<script>
+  
+  let url = new URL(window.location.href).searchParams
+  let paramN = url.get('next')
+
+  let options = {
+    el:'#app',
+    delimiters: ['{!','!}'],
+    data:{
+      message:'',
+
+      alertObj:{
+        display:"none"
+      },
+
+      form:{
+        username:'',
+        password:'' 
+      }
+    },
+
+    methods:{
+      login:function(){
+        const headers = { 'Content-Type': 'application/json',}
+
+        let url = "{% url 'login:lico_auth' %}" +'?next='+paramN //get url
+
+        let formData = new FormData();//create form data
+        formData.append("csrfmiddlewaretoken","{{csrf_token}}")
+        formData.append('username', this.form.username);
+        formData.append('password', this.form.password);
+        formData.append('next',paramN);
+
+
+        axios.post(url, formData, {
+          headers: headers}
+        )
+        .then((response) =>{
+          
+          if(typeof response.data =='object'){
+            // JSON.parse(response.data)
+            $('.alert').show()
+            this.message = response.data.message
+           
+          }
+          else{
+            window.location = window.location.href
+          }
+        })
+      }
+    }
+  }
+
+  let cl = new Vue(options)
+</script>
 {%endblock%}
