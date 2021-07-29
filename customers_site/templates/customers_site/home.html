@@ -1,23 +1,50 @@
 {%extends 'login/index.html'%}
 
 {% block content %}
-
-    <div class="container">
+    
+    <div class="container" id="app">
         <div class="row">   
+            <section class="col col-lg-12">
+                <div class=" col col-md-8 d-flex justify-content-center">
+                    <!-- Gallery item -->
+                  <div class="col-xl-3 col-lg-4 col-md-6 mb-4 float-left" v-for="product of paginateProducts">
+                      <div class="bg-white rounded shadow-sm"><img src="https://res.cloudinary.com/mhmd/image/upload/v1556294928/nicole-honeywill-546848-unsplash_ymprvp.jpg" alt="" class="img-fluid card-img-top">
+                      <div class="p-4">
+                          <h5> <a href="#" class="text-dark">{!product.name!}</a></h5>
+                          <p class="small text-muted mb-0" >Stocks: <span :class="product.stock>0?'text-primary':'text-danger'">{!product.stock!}</span></p>
+                          <p class="small text-muted mb-0">Category: <a class="text-success">{!product.category[0]!}</a></p>
+                          <div class="d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">
+                                  <p class="small mb-0"><i class="fa fa-picture-o mr-2"></i><span class="font-weight-bold">&#8369;{!product.price!}</span></p>
+                                  <span id = heart><i class="fas fa-heart" ></i> </span>
+                                  <a  class="badge  px-3 rounded-pill font-weight-normal text-white" :class="product.stock>0?'badge-warning':'badge-danger disabled'" v-text="product.stock>0?'Add to Cart':'Not Available!'" ></a>
+                          </div>
+                      </div>
+                      </div>
+                  </div>
+          </div>
+
+            </section>
+        </div>
+        <!-- navigation -->
+        <div class="row">
             <div class="col-md-12">
-                      <!-- Gallery item -->
-                    <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-                        <div class="bg-white rounded shadow-sm"><img src="https://res.cloudinary.com/mhmd/image/upload/v1556294928/nicole-honeywill-546848-unsplash_ymprvp.jpg" alt="" class="img-fluid card-img-top">
-                        <div class="p-4">
-                            <h5> <a href="#" class="text-dark">Lorem ipsum dolor</a></h5>
-                            <p class="small text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
-                            <div class="d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">
-                            <p class="small mb-0"><i class="fa fa-picture-o mr-2"></i><span class="font-weight-bold">JPG</span></p>
-                            <div class="badge badge-warning px-3 rounded-pill font-weight-normal text-white">Featured</div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
+                <nav aria-label="...">
+                    <ul class="pagination  justify-content-center">
+                      <li class="page-item" :class="{'disabled':isFirstPage}">
+                        <a @click = "prev()" class="page-link" href="#">Previous</a>
+                      </li>
+                      <li @click="currentPage=page" :class="currentPage===page?'active':''"
+                       class="page-item" v-for="page in pages">
+                       <a class="page-link" :href="'#page=' + page">
+                         {!page!}
+                        </a>
+                      </li>
+                      
+                      <li class="page-item" :class="{'disabled':isLastPage}">
+                        <a @click = "next()" class="page-link" href="#">Next</a>
+                      </li>
+                    </ul>
+                  </nav>
             </div>
 
         </div>
@@ -28,18 +55,80 @@
     <script>
         const hostname = window.location.origin + window.location.pathname
         let options = {
-            el:"#app",
-            delimiters: ["{!","!}"],
-            data : {
-                products:{},
+                el:"#app",
+                delimiters: ["{!","!}"],
+                data : {
+                    products: [
+                         
+                    ],
+                    cart:[],
+                    order:{
+                        dir:1,
+                        column:'name'
+                    },
+
+                    filter:{
+                        name:''
+                    },
+
+                    product:{
+                        id:'',
+                        name:'',
+                        category:'',
+                        price:'',
+                        stock:'',
+                    },
+
                 
-            },
-            computed:{
+                    currentPage:1,
+                    perPage:8,
+                    errors: [],
                 
-            },
-            methods:{
-0
-            }
+                            
+                },
+                mounted(){
+                    this.fetchProducts()
+                },
+                computed:{
+                    pages(){
+                        return Math.ceil(this.products.length/this.perPage)
+                    },
+                    isFirstPage(){
+                        return this.currentPage === 1;
+                    },
+                    isLastPage(){
+                        return this.currentPage === this.pages;
+                    },
+                    paginateProducts(){
+                        let start = (this.currentPage - 1) * this.perPage
+                        ,end = this.currentPage * this.perPage
+
+                        return this.products.slice(start, end)
+                    },
+
+                },
+                methods:{
+                    prev(){
+                        if(!this.isFirstPage){
+                            this.currentPage--;
+                        }
+                    },
+                    next(){
+                        if(!this.isLastPage){
+                            this.currentPage++;
+                        }
+                    },
+                    fetchProducts(){
+        
+                        axios.get("{%url 'survey_app:products_list' %}").
+                        then((response) => {
+                            for(var i  = 0; i<response.data.products.length; i++){
+                                item = response.data.products[i]
+                                this.products.push(item.fields)
+                         }
+                        })
+                    },
+                }
         }
         let cl = new Vue(options)
     </script>

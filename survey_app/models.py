@@ -5,11 +5,17 @@ import time
 from django.db.models import fields
 # Create your models here.
 t_date = int(time.mktime(datetime.utcnow().timetuple())*1000)
+
+class CategoryModel(models.Manager):
+    def get_by_natural_key(self,name):
+        return self.get(name=name)
+
+
 class Category(models.Model):
     name = models.CharField(null=False,max_length=250, unique=True)
     created_at =  models.BigIntegerField(default = t_date)
     updated_at = models.BigIntegerField(default = t_date)
-
+    objects = CategoryModel()
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
@@ -17,6 +23,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def natural_key(self):
+        return (self.name, self.id)
+    
+    
+    
 
 class Product(models.Model):
     name = models.CharField(null=False,max_length=250, unique=True)

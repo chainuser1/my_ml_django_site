@@ -19,7 +19,8 @@ from . import views
 app_name = 'survey_app'
 urlpatterns = [
     path('', views.home, name='home'),
-    path('products/', views.products),
+    path('products/', views.products, name="products"),
+    path('products/list', views.products_list, name="products_list"),
     path('products/create',views.create),
     path('product/<int:id>/update', views.update),
     path('product/<int:id>/delete', views.delete),

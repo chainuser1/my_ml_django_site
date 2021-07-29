@@ -92,6 +92,12 @@ def show_logs(request):
     return JsonResponse({'logs':json.loads(logs)}, safe=False)
 
 
+def products_list(request):
+    products = Product.objects.all()
+    products = serialize('json',products, use_natural_foreign_keys=True, use_natural_primary_keys=True)
+    return JsonResponse({'products':json.loads(products)}, safe=False)
+
+
 @login_required(redirect_field_name='next', login_url = 'login:login_do')
 def show_numpy_data_products(requests):
     products =  Product.objects.all()

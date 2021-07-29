@@ -30,7 +30,9 @@ var c = new Vue({
 
       directory: 'Dashboard',
       //  products
-        products: [],
+        products: [
+           
+        ],
         categories:[],
         order:{
             dir:1,
