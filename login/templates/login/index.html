@@ -5,20 +5,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    
     <link rel="stylesheet" href="{% static 'css/all.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
     <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
-    <title>Tindahan ni ALing Kikay</title>
+    <title>PeculiAZarm</title>
+    <style>
+        .glow {
+            color: #fff;
+            text-align: center;
+            -webkit-animation: glow 1s ease-in-out infinite alternate;
+            -moz-animation: glow 1s ease-in-out infinite alternate;
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+
+        @-webkit-keyframes glow {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px rgb(170, 211, 228), 0 0 30px hsl(162, 100%, 45%), 0 0 40px #00e645, 0 0 50px #54e600, 0 0 60px #90c515, 0 0 70px #153805;
+            }
+            to {
+                text-shadow: 0 0 20px #fff, 0 0 30px #9bdbb9, 0 0 40px #4dff56, 0 0 50px #17c911, 0 0 60px #9dff4d, 0 0 70px #1ea107, 0 0 80px #2b5013;
+            }
+        }
+    </style>
 </head>
 
 
 <body>
-
+  
   <script src="{% static 'js/jquery.slim.min.js'%}" ></script>
   <script src="{% static 'js/popper.min.js'%}" ></script>
+  <script src="{% static 'js/script.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js'%}" ></script>
   <script src="{% static 'js/axios.js'%}" ></script>
   <script src="{% static 'js/toastr.min.js' %}"></script>
@@ -37,94 +61,69 @@
 
 <!-- end expr -->
 
-
-  <nav class="navbar navbar-expand-lg bg-light navbar-light">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-      <!-- Navbar brand -->
-      <a class="navbar-brand" href="#">Tindahan ni ALing Kikay</a>
-  
-      <!-- Toggle button -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
-  
-      <!-- Collapsible wrapper -->
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container px-4 px-lg-5">
+      <a class="navbar-brand badge badge-success glow" href="#!">PeculiAZFarm</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-  
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <!-- Link -->
-          <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-          <!-- Dropdown -->
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-mdb-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Dropdown
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
-        </ul>
-  
-        <!-- Icons -->
-        <ul class="navbar-nav d-flex flex-row me-1">
-          <li class="nav-item me-3 me-lg-0">
-            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i></a>
-          </li>
-          <li class="nav-item me-3 me-lg-0">
-            <a class="nav-link" href="#"><i class="fab fa-twitter"></i></a>
-          </li>
-        </ul>
-        <!-- Search -->
-        <form class="w-auto">
-          <input
-            type="search"
-            class="form-control"
-            placeholder="Type query"
-            aria-label="Search"
-          />
-        </form>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+              <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="#!">For You</a></li>
+                      <li><hr class="dropdown-divider" /></li>
+                      <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                      <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                      <li><a class="dropdown-item" href="#!">All Products</a></li>
+                  </ul>
+              </li>
+          </ul>
+          <form class="d-flex">
+              <button class="btn btn-outline-dark" type="submit">
+                  <i class="bi-cart-fill me-1"></i>
+                  Cart
+                  <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+              </button>
+          </form>
       </div>
-    </div>
-    <!-- Container wrapper -->
-  </nav>
-  <!-- Navbar -->
+  </div>
+</nav>
+<!-- Header-->
+<header class="bg-success py-5">
+  <div class="container px-4 px-lg-5 my-5">
+      <div class="text-center text-purple">
+          <h1 class="display-4 fw-bolder">We sell what's unique for you</h1>
+          <p class="lead fw-normal text-dark mb-0">PeculiAZarm, welcomes you</p>
+      </div>
+  </div>
+</header>
+
     <div class="wrapper fadeInDown">
-      <!-- Navbar -->
+     
 
         <div id="formContent">
-         
+          
          {%block content%}
           <!-- Tabs Titles -->
           
           <!-- Icon -->
-          <div class="fadeIn first">
-            <img src="https://cdn.iconscout.com/icon/free/png-256/user-1648810-1401302.png" id="icon" alt="User Icon" />
-          </div>
-      
+         
          {%endblock%}
       
         </div>
       </div>
 
+      <!-- footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; PeculiAZFarm 2021</p></div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
 
 </body>
 </html>

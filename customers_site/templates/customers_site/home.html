@@ -3,51 +3,68 @@
 {% block content %}
     
     <div class="container" id="app">
-        <div class="row">   
-            <section class="col col-lg-12">
-                <div class=" col col-md-8 d-flex justify-content-center">
-                    <!-- Gallery item -->
-                  <div class="col-xl-3 col-lg-4 col-md-6 mb-4 float-left" v-for="product of paginateProducts">
-                      <div class="bg-white rounded shadow-sm"><img src="https://res.cloudinary.com/mhmd/image/upload/v1556294928/nicole-honeywill-546848-unsplash_ymprvp.jpg" alt="" class="img-fluid card-img-top">
-                      <div class="p-4">
-                          <h5> <a href="#" class="text-dark">{!product.name!}</a></h5>
-                          <p class="small text-muted mb-0" >Stocks: <span :class="product.stock>0?'text-primary':'text-danger'">{!product.stock!}</span></p>
-                          <p class="small text-muted mb-0">Category: <a class="text-success">{!product.category[0]!}</a></p>
-                          <div class="d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-4">
-                                  <p class="small mb-0"><i class="fa fa-picture-o mr-2"></i><span class="font-weight-bold">&#8369;{!product.price!}</span></p>
-                                  <span id = heart><i class="fas fa-heart" ></i> </span>
-                                  <a  class="badge  px-3 rounded-pill font-weight-normal text-white" :class="product.stock>0?'badge-warning':'badge-danger disabled'" v-text="product.stock>0?'Add to Cart':'Not Available!'" ></a>
-                          </div>
-                      </div>
-                      </div>
-                  </div>
-          </div>
-
-            </section>
-        </div>
-        <!-- navigation -->
-        <div class="row">
-            <div class="col-md-12">
-                <nav aria-label="...">
-                    <ul class="pagination  justify-content-center">
-                      <li class="page-item" :class="{'disabled':isFirstPage}">
-                        <a @click = "prev()" class="page-link" href="#">Previous</a>
-                      </li>
-                      <li @click="currentPage=page" :class="currentPage===page?'active':''"
-                       class="page-item" v-for="page in pages">
-                       <a class="page-link" :href="'#page=' + page">
-                         {!page!}
-                        </a>
-                      </li>
-                      
-                      <li class="page-item" :class="{'disabled':isLastPage}">
-                        <a @click = "next()" class="page-link" href="#">Next</a>
-                      </li>
-                    </ul>
-                  </nav>
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    <div class="col mb-5" v-for="product of paginateProducts">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                            <!-- Product image-->
+                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder" v-text="product.name"></h5>
+                                    <!-- Product reviews-->
+                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                    </div>
+                                    <!-- Product price-->
+                                    {! product.price !}
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to Cart</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-        </div>
+
+            <!-- navigation -->
+            <div class="row">
+                <div class="col-md-12">
+                    <nav aria-label="...">
+                        <ul class="pagination  justify-content-center">
+                          <li class="page-item" :class="{'disabled':isFirstPage}">
+                            <a @click = "prev()" class="page-link" href="#">Previous</a>
+                          </li>
+                          <li @click="currentPage=page" :class="currentPage===page?'active':''"
+                           class="page-item" v-for="page in pages">
+                           <a class="page-link" :href="'#page=' + page">
+                             {!page!}
+                            </a>
+                          </li>
+                          
+                          <li class="page-item" :class="{'disabled':isLastPage}">
+                            <a @click = "next()" class="page-link" href="#">Next</a>
+                          </li>
+                        </ul>
+                      </nav>
+                </div>
+    
+            </div>
+        </section>
+
+        
 
     
     </div>
