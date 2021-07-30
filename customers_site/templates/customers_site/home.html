@@ -18,20 +18,30 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder" v-text="product.name"></h5>
                                     <!-- Product reviews-->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                    <!-- <div class="d-flex justify-content-center small text-warning mb-2">
                                         <div class="bi-star-fill"></div>
                                         <div class="bi-star-fill"></div>
                                         <div class="bi-star-fill"></div>
                                         <div class="bi-star-fill"></div>
                                         <div class="bi-star-fill"></div>
+                                    </div> -->
+
+                                    <div class="container">
+                                        <span id=""  class="empty-stars"></span>
                                     </div>
+                                   
                                     <!-- Product price-->
-                                    {! product.price !}
+                                    &#8369;{! product.price !}
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to Cart</a></div>
+
+                                <div class="text-center">
+                                    <p class="fas">Stock: <span :class="product.stock>0?'text-success':'text-danger'" v-text="product.stock"></span></p>
+                                    <br>
+                                    <a class="btn btn-outline-dark mt-auto" href="#">Add to Cart</a></div>
+                                    <p class="fas">Category: <span class="text-success">{!product.category[0]!}</span></p>
                             </div>
                         </div>
                     </div>
@@ -104,6 +114,7 @@
                             
                 },
                 mounted(){
+                    $('.empty-stars').mdbRate();
                     this.fetchProducts()
                 },
                 computed:{

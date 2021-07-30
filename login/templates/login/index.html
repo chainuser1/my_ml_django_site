@@ -14,8 +14,9 @@
     <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
     <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/addons/rating.min.css' %}">
     <title>PeculiAZarm</title>
     <style>
         .glow {
@@ -25,7 +26,14 @@
             -moz-animation: glow 1s ease-in-out infinite alternate;
             animation: glow 1s ease-in-out infinite alternate;
         }
-
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px rgb(170, 211, 228), 0 0 30px hsl(162, 100%, 45%), 0 0 40px #00e645, 0 0 50px #54e600, 0 0 60px #90c515, 0 0 70px #153805;
+            }
+            to {
+                text-shadow: 0 0 20px #fff, 0 0 30px #9bdbb9, 0 0 40px #4dff56, 0 0 50px #17c911, 0 0 60px #9dff4d, 0 0 70px #1ea107, 0 0 80px #2b5013;
+            }
+        }
         @-webkit-keyframes glow {
             from {
                 text-shadow: 0 0 10px #fff, 0 0 20px rgb(170, 211, 228), 0 0 30px hsl(162, 100%, 45%), 0 0 40px #00e645, 0 0 50px #54e600, 0 0 60px #90c515, 0 0 70px #153805;
@@ -42,7 +50,7 @@
   
   <script src="{% static 'js/jquery.slim.min.js'%}" ></script>
   <script src="{% static 'js/popper.min.js'%}" ></script>
-  <script src="{% static 'js/script.js' %}"></script>
+  <!-- <script src="{% static 'js/scripts.js' %}"></script> -->
   <script src="{% static 'js/bootstrap.min.js'%}" ></script>
   <script src="{% static 'js/axios.js'%}" ></script>
   <script src="{% static 'js/toastr.min.js' %}"></script>
@@ -50,6 +58,7 @@
   <script src="{% static 'js/chart.min.js'%}" ></script>
   <script src="{% static 'js/feathers.min.js'%}" ></script>
   <script src="{% static 'js/mdb.min.js' %}"></script>
+  <script src="{% static 'js/addons/rating.min.js' %}"></script>
 
 
 
