@@ -54,17 +54,16 @@
   <script src="{% static 'js/bootstrap.min.js'%}" ></script>
   <script src="{% static 'js/axios.js'%}" ></script>
   <script src="{% static 'js/toastr.min.js' %}"></script>
+  <script src="{% static 'js/lyncher.js' %}"></script>
   <script src="{% static 'js/vue.js'%}" ></script>
   <script src="{% static 'js/chart.min.js'%}" ></script>
   <script src="{% static 'js/feathers.min.js'%}" ></script>
   <script src="{% static 'js/mdb.min.js' %}"></script>
   <script src="{% static 'js/addons/rating.min.js' %}"></script>
+  
 
 
-
-
-
-
+<div id="app">
 <!-- exper -->
 
 
@@ -80,7 +79,8 @@
               <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
               <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
               <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                  <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-shopping-bag"></i></a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <li><a class="dropdown-item" href="#!">For You</a></li>
                       <li><hr class="dropdown-divider" /></li>
@@ -89,14 +89,43 @@
                       <li><a class="dropdown-item" href="#!">All Products</a></li>
                   </ul>
               </li>
+              
           </ul>
-          <form class="d-flex">
-              <button class="btn btn-outline-dark" type="submit">
+          <ul v-if="cartObject" class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 d-flex">
+            <li class="nav-item dropdown">
+              <a class="btn btn-outline-dark nav-link dropdown-toggle" id="navbarDropdown" href="#"
+                  role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="bi-cart-fill me-1"></i>
                   Cart
-                  <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-              </button>
-          </form>
+                  <span class="badge bg-dark text-white ms-1 rounded-pill"
+                   v-text="cartObject.cartCount"></span>
+              </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!" 
+                        v-for="cartItem of cartObject.cartItems">
+                            <span><strong v-text="cartItem.name"></strong></span><br>
+                            <span><em v-text="cartItem.price"></em></span>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                </ul>
+              </li>
+            </ul>
+          
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-2 ">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user "></i></a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!">For You</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                    <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                    <li><a class="dropdown-item" href="#!">All Products</a></li>
+                </ul>
+            </li>
+          </ul>
+          
       </div>
   </div>
 </nav>
@@ -104,8 +133,8 @@
 <header class="bg-success py-5">
   <div class="container px-4 px-lg-5 my-5">
       <div class="text-center text-purple">
-          <h1 class="display-4 fw-bolder">We sell what's unique for you</h1>
-          <p class="lead fw-normal text-dark mb-0">PeculiAZarm, welcomes you</p>
+          <h1 class="display-4 fw-bolder text-white">We sell what's unique for you</h1>
+          <p class="lead fw-normal text-white-50 mb-0">PeculiAZFarm, welcomes you</p>
       </div>
   </div>
 </header>
@@ -124,7 +153,7 @@
       
         </div>
       </div>
-
+    </div>
       <!-- footer -->
     <footer class="py-5 bg-dark">
         <div class="container"><p class="m-0 text-center text-white">Copyright &copy; PeculiAZFarm 2021</p></div>
@@ -132,7 +161,6 @@
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
-
+    
 </body>
 </html>

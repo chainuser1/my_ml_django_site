@@ -1,8 +1,8 @@
 {%extends 'login/index.html'%}
 
 {% block content %}
-    
-    <div class="container" id="app">
+{% load static %}   
+    <div class="container">
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -35,12 +35,19 @@
                                 </div>
                             </div>
                             <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class=" text-center card-footer p-4 pt-0 border-top-0 bg-transparent">
 
                                 <div class="text-center">
                                     <p class="fas">Stock: <span :class="product.stock>0?'text-success':'text-danger'" v-text="product.stock"></span></p>
                                     <br>
-                                    <a class="btn btn-outline-dark mt-auto" href="#">Add to Cart</a></div>
+                                    <div class="d-flex justify-content-center qty ">
+                                     <a><i class="fas fa-minus text-danger" @click=""></i></a>
+                                        <input type="text" class="col-sm-4 text-grey mt-1 mr-1 ml-1 text-right">
+                                     <a><i class="fas fa-plus text-success" @click=""></i></a>
+                                   </div>
+                                   
+                                    <hr class="divider"></div>
+                                    <a class="btn btn-outline-dark mt-auto" href="#" @click="addToCart(product)">Add to Cart</a></div>
                                     <p class="fas">Category: <span class="text-success">{!product.category[0]!}</span></p>
                             </div>
                         </div>
@@ -78,87 +85,111 @@
 
     
     </div>
-
-    <script>
-        const hostname = window.location.origin + window.location.pathname
-        let options = {
-                el:"#app",
-                delimiters: ["{!","!}"],
-                data : {
-                    products: [
-                         
-                    ],
-                    cart:[],
-                    order:{
-                        dir:1,
-                        column:'name'
-                    },
-
-                    filter:{
-                        name:''
-                    },
-
-                    product:{
-                        id:'',
-                        name:'',
-                        category:'',
-                        price:'',
-                        stock:'',
-                    },
-
+   
+    <script type="application/javascript">
+       
+         new Vue( {
+            el:"#app",
+            delimiters: ["{!","!}"],
+            data : {
+                products: [
+                     
+                ],
+                cartObject: {
+                    cartCount: 0,
+                    cartItems: [],
+                    quantity:0
+                },
                 
-                    currentPage:1,
-                    perPage:8,
-                    errors: [],
+                order:{
+                    dir:1,
+                    column:'name'
+                },
+
+                filter:{
+                    name:''
+                },
+
+                product:{
+                    id:'',
+                    name:'',
+                    category:'',
+                    price:'',
+                    stock:'',
+                },
+
+            
+                currentPage:1,
+                perPage:8,
+                errors: [],
+            
+                        
+            },
+           
+            mounted(){
+                $('.empty-stars').mdbRate();
+                this.fetchProducts()
+            },
+            computed:{
                 
-                            
-                },
-                mounted(){
-                    $('.empty-stars').mdbRate();
-                    this.fetchProducts()
-                },
-                computed:{
-                    pages(){
-                        return Math.ceil(this.products.length/this.perPage)
-                    },
-                    isFirstPage(){
-                        return this.currentPage === 1;
-                    },
-                    isLastPage(){
-                        return this.currentPage === this.pages;
-                    },
-                    paginateProducts(){
-                        let start = (this.currentPage - 1) * this.perPage
-                        ,end = this.currentPage * this.perPage
 
-                        return this.products.slice(start, end)
-                    },
-
+                pages(){
+                    return Math.ceil(this.products.length/this.perPage)
                 },
-                methods:{
-                    prev(){
-                        if(!this.isFirstPage){
-                            this.currentPage--;
-                        }
-                    },
-                    next(){
-                        if(!this.isLastPage){
-                            this.currentPage++;
-                        }
-                    },
-                    fetchProducts(){
-        
-                        axios.get("{%url 'survey_app:products_list' %}").
-                        then((response) => {
-                            for(var i  = 0; i<response.data.products.length; i++){
-                                item = response.data.products[i]
-                                this.products.push(item.fields)
-                         }
+                isFirstPage(){
+                    return this.currentPage === 1;
+                },
+                isLastPage(){
+                    return this.currentPage === this.pages;
+                },
+                paginateProducts(){
+                    let start = (this.currentPage - 1) * this.perPage
+                    ,end = this.currentPage * this.perPage
+
+                    return this.products.slice(start, end)
+                },
+
+            },
+            methods:{
+                prev(){
+                    if(!this.isFirstPage){
+                        this.currentPage--;
+                    }
+                },
+                next(){
+                    if(!this.isLastPage){
+                        this.currentPage++;
+                    }
+                },
+                fetchProducts(){
+    
+                    axios.get("{%url 'survey_app:products_list' %}").
+                    then((response) => {
+                        for(var i  = 0; i<response.data.products.length; i++){
+                            item = response.data.products[i]
+                            this.products.push(item.fields)
+                     }
+                    })
+                },
+
+                // add to cart
+                addToCart(product){
+                    if (product.stock>0){
+                        this.cartObject.cartCount++
+                        this.cartObject.cartItems.push({
+                            id:product.id,
+                            name:product.name,
+                            price:product.price
                         })
-                    },
-                }
-        }
-        let cl = new Vue(options)
+                    }
+                    toastr.message["danger"]("Product is not available")
+                },
+                
+                
+            }
+        })
+    
+        
     </script>
 
 {% endblock %}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
