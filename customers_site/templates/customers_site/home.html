@@ -40,12 +40,8 @@
                                 <div class="text-center">
                                     <p class="fas">Stock: <span :class="product.stock>0?'text-success':'text-danger'" v-text="product.stock"></span></p>
                                     <br>
-                                    <div class="d-flex justify-content-center qty ">
-                                     <a><i class="fas fa-minus text-danger" @click=""></i></a>
-                                        <input type="text" class="col-sm-4 text-grey mt-1 mr-1 ml-1 text-right">
-                                     <a><i class="fas fa-plus text-success" @click=""></i></a>
-                                   </div>
-                                   
+                                    
+                                   <!-- <click-cart></click-cart> -->
                                     <hr class="divider"></div>
                                     <a class="btn btn-outline-dark mt-auto" href="#" @click="addToCart(product)">Add to Cart</a></div>
                                     <p class="fas">Category: <span class="text-success">{!product.category[0]!}</span></p>
@@ -87,8 +83,20 @@
     </div>
    
     <script type="application/javascript">
-       
-         new Vue( {
+        
+         var colcart = {
+             data: function(){
+
+             },
+             methods: {},
+             template: '<div class="d-flex justify-content-center qty ">'+
+                                     '<a><i class="fas fa-minus text-danger" @click=""></i></a>'+
+                                       ' <input type="text" class="col-sm-4 text-grey mt-1 mr-1 ml-1 text-right">'+
+                                     '<a><i class="fas fa-plus text-success" @click=""></i></a>'+
+                                   '</div>'
+         }
+        
+         var app = new Vue( {
             el:"#app",
             delimiters: ["{!","!}"],
             data : {
@@ -125,7 +133,9 @@
             
                         
             },
-           
+            components: {
+                'click-cart': colcart
+            },
             mounted(){
                 $('.empty-stars').mdbRate();
                 this.fetchProducts()
