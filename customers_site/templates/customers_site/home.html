@@ -6,43 +6,29 @@
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <div class="col mb-5" v-for="product of paginateProducts">
-                        <div class="card h-100">
+                    <div class="col mb-5" v-for="product of paginateProducts" style="width: 18rem; padding-bottom: 3em;padding-right: 3em;">
+                        <div class="card h-100" >
                             <!-- Sale badge-->
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                            <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                             <!-- Product image-->
                             <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
                             <!-- Product details-->
-                            <div class="card-body p-4">
+                            <div class="card-body p-2">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder" v-text="product.name"></h5>
-                                    <!-- Product reviews-->
-                                    <!-- <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                        <div class="bi-star-fill"></div>
-                                    </div> -->
-
-                                    <div class="container">
-                                        <span id=""  class="empty-stars"></span>
-                                    </div>
-                                   
-                                    <!-- Product price-->
-                                    &#8369;{! product.price !}
+                                    <p class="text-success fw-bolder" v-text="product.name"></p>
+                                    
+                                    <p class="text-muted fw-semi-bold">&#8369;{! product.price !}</p>
                                 </div>
                             </div>
                             <!-- Product actions-->
-                            <div class=" text-center card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class=" text-center card-footer p-2 pt-0 border-top-0 bg-transparent">
 
                                 <div class="text-center">
                                     <p class="fas">Stock: <span :class="product.stock>0?'text-success':'text-danger'" v-text="product.stock"></span></p>
                                     <br>
                                     <p class="fas">Category: <span class="text-success" v-text="product.category[0]"></span></p>
-                                   <click-cart v-bind:product="product" ></click-cart>
-                                  
+                                    <click-cart v-bind:product="product" v-on:add-to-cart="addToCart(product,$event)"></click-cart>
                                 </div>   
                                     
                             </div>
@@ -86,36 +72,75 @@
         
          var colcart = {
              props:{
-                 product:Object
+                 product:{}
              },
              data: function(){
                     return {
                         counter: 0,
+                        like:0
                     }
+             },
+             computed:{
+                 //get heart 
+                printHtml(){
+                    if(this.like>0){
+                        return '<i class="fas fa-heart"></i>'
+                    }
+                    return '<i class="fas fa-heart-broken"></i>'
+                    
+                },
+                //scroll if can add to cart
+                notif_scroller(){
+                    if(this.counter>0)
+                        return '#'
+                    return false
+                }
              },
              methods: {
                     addToCounter(){
                         if(this.counter>=0 && this.counter<this.product.stock)
                             this.counter++;
                         else
-                            // toastr['warning']('Out of stock');
-                            alert("Order is out of stocks")
+                            toastr['error']('Exceeds available stock');
+                            
                     },
                     removeFromCounter(){
                         if(this.counter>=1)
                             this.counter--;
                     },
-                    
+                    addToCart(){
+                        if(this.counter>0 && this.counter<this.product.stock){
+                            notie.alert({type:'info',
+                                text:this.product.name + ' was added to cart'});
+                            this.$emit('add-to-cart',this.counter)
+                        }
+                        else{
+                            // toastr['error']()
+                            notie.alert({type:'error',
+                                text:'Must not exceed available stock and should be greater than 0'});
+                        }
+                    },
+                    likeOrDislike(){
+                        if(this.like==0){
+                            this.like++;
+                            
+                        }
+                        else{
+                            this.like--;
+                        }
+                    }
 
              },
              template: '<div>'+
                             '<div class="d-flex justify-content-center qty">'+
                                 '<a><i class="fas fa-minus text-danger" @click="removeFromCounter()"></i></a>'+
-                                       ' <input v-model= "counter" type="text" class="col-sm-4 text-grey mt-1 mr-1 ml-1 text-right">'+
+                                       ' <input v-model= "counter" class="col-sm-4 text-grey mt-1 mr-1 ml-1 text-right">'+
                                 '<a><i class="fas fa-plus text-success" @click="addToCounter()"></i></a>'+
-                            +'</div><br>'+
-                            //'<hr class="divider">'+
-                            //'<p><a class="btn btn-outline-dark mt-auto" href="#" @click="">Add to Cart</a></p>'+
+                            '</div>'+
+                            '<hr class="divider">'+
+                            '<input type="hidden" v-model="like" >'+
+                            '<p><a style ="display:inline-block;"   class="btn btn-small btn-outline-success mt-auto" :href="notif_scroller" @click="addToCart()">Buy</a>'+
+                            '<a style ="display:inline-block;" class="btn btn-small btn-outline-danger mt-auto" @click="likeOrDislike()" v-html="printHtml"></a></p>'+
                        '</div>'
                                    
                                     
@@ -153,7 +178,7 @@
 
             
                 currentPage:1,
-                perPage:8,
+                perPage:4,
                 errors: [],
             
                         
@@ -208,16 +233,20 @@
                 },
 
                 // add to cart
-                addToCart(product){
+                addToCart(product,x){
                     if (product.stock>0){
                         this.cartObject.cartCount++
-                        this.cartObject.cartItems.push({
+                        this.cartObject.cartItems.unshift({
                             id:product.id,
                             name:product.name,
-                            price:product.price
+                            price:product.price,
+                            no_items:x,
                         })
+                        this.product.stock =- x
                     }
-                    toastr.message["danger"]("Product is not available")
+                    else{
+                        toastr["error"]("Product is not available")
+                    }
                 },
                 
                 

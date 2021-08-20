@@ -5,14 +5,14 @@ from . import constants
 # Create your models here.
 
 class Preference(models.Model):
-    like_dislike = models.PositiveIntegerField(default = 0)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, primary_key=True, default=1)
     user = models.ForeignKey(User, on_delete = models.CASCADE)
-    product = models.OneToOneField(
-        Product,
-        on_delete = models.CASCADE,
-        primary_key=True,
-    )
-
+    product_name = models.CharField(null=True,max_length=250, unique=True)
+    product_price = models.DecimalField(null= True,max_digits = 8, decimal_places=2)
+    product_category = models.PositiveIntegerField(null=True, choices=constants.CATEGORY_CHOICES)
+    like = models.PositiveIntegerField(default = 0)
+    created_at =  models.BigIntegerField(default = t_date)
+    updated_at = models.BigIntegerField(default = t_date)
     class Meta:
         verbose_name = 'preference'
         verbose_name_plural = "preferences"

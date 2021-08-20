@@ -14,9 +14,11 @@
     <link rel="stylesheet" href="{% static 'css/toastr.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
     <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/notie.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/addons/rating.min.css' %}">
+    
     <title>PeculiAZarm</title>
     <style>
         .glow {
@@ -46,11 +48,11 @@
 </head>
 
 
-<body>
+<body class="bg-light">
   
   <script src="{% static 'js/jquery.slim.min.js'%}" ></script>
   <script src="{% static 'js/popper.min.js'%}" ></script>
-  <!-- <script src="{% static 'js/scripts.js' %}"></script> -->
+  <script src="{% static 'js/scripts.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js'%}" ></script>
   <script src="{% static 'js/axios.js'%}" ></script>
   <script src="{% static 'js/toastr.min.js' %}"></script>
@@ -59,6 +61,7 @@
   <script src="{% static 'js/chart.min.js'%}" ></script>
   <script src="{% static 'js/feathers.min.js'%}" ></script>
   <script src="{% static 'js/mdb.min.js' %}"></script>
+  <script src="{% static 'js/notie.min.js' %}"></script>
   <script src="{% static 'js/addons/rating.min.js' %}"></script>
   
 
@@ -70,7 +73,7 @@
 <!-- end expr -->
 
 <!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
   <div class="container px-4 px-lg-5">
       <a class="navbar-brand badge badge-success glow" href="#!">PeculiAZFarm</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -93,21 +96,31 @@
           </ul>
           <ul v-if="cartObject" class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 d-flex">
             <li class="nav-item dropdown">
-              <a class="btn btn-outline-dark nav-link dropdown-toggle" id="navbarDropdown" href="#"
+              <a class="btn btn-outline-light nav-link dropdown-toggle" id="navbarDropdown" href="#"
                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="bi-cart-fill me-1"></i>
                   Cart
-                  <span class="badge bg-dark text-white ms-1 rounded-pill"
+                  <span class="badge bg-warning text-white ms-1 rounded-pill"
                    v-text="cartObject.cartCount"></span>
               </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!" 
-                        v-for="cartItem of cartObject.cartItems">
-                            <span><strong v-text="cartItem.name"></strong></span><br>
-                            <span><em v-text="cartItem.price"></em></span>
+                    <li  v-if="cartObject.cartItems.length==0"> 
+                        <a class="dropdown-item" href="#!">     
+                            <span class="text-danger"><strong>No items added</strong></span>
                         </a>
                     </li>
-                    <li><hr class="dropdown-divider" /></li>
+                    <li v-else>
+                        <a class="dropdown-item" href="#!" 
+                        v-for="cartItem of cartObject.cartItems" >
+                            <!-- <hr class="dropdown-divider" />   -->
+                            <span>Item:&nbsp;<strong v-text="cartItem.name"></strong></span><br>
+                            <span>Price:&nbsp; <em v-text="cartItem.price"></em></span> * <span><em v-text="cartItem.no_items"></em></span><br>
+                            <span><em>Amount:&nbsp;</em><strong v-text="cartItem.price * cartItem.no_items"></strong></span>
+                            <hr class="dropdown-divider" />  
+                        </a>
+                        
+                    </li>
+                   
                 </ul>
               </li>
             </ul>
@@ -118,7 +131,7 @@
                     <i class="fas fa-user "></i></a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     {% if user.is_authenticated %}
-                        <li><a class="dropdown-item" href="#!">{{ user.username }}</a></li>
+                    <li><a class="dropdown-item" href="#!">{{ user.username }}</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="{% url 'login:lico_logout' %}">Logout</a></li>
                     {%endif%}
@@ -130,7 +143,7 @@
   </div>
 </nav>
 <!-- Header-->
-<header class="bg-success py-5">
+<header class="bg-success text-white py-5">
   <div class="container px-4 px-lg-5 my-5">
       <div class="text-center text-purple">
           <h1 class="display-4 fw-bolder text-white">We sell what's unique for you</h1>
