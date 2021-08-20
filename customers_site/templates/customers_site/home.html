@@ -6,6 +6,13 @@
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    <div class="input-group rounded py-5">
+                        <input type="search" v-model="filter.keyword" class="form-control rounded" placeholder="Search" aria-label="Search"
+                          aria-describedby="search-addon" />
+                        <span class="input-group-text border-0" id="search-addon">
+                          <i class="fas fa-search"></i>
+                        </span>
+                      </div>
                     <div class="col mb-5" v-for="product of paginateProducts" style="width: 18rem; padding-bottom: 3em;padding-right: 3em;">
                         <div class="card h-100" >
                             <!-- Sale badge-->
@@ -123,7 +130,7 @@
                     likeOrDislike(){
                         if(this.like==0){
                             this.like++;
-                            
+
                         }
                         else{
                             this.like--;
@@ -165,6 +172,7 @@
                 },
 
                 filter:{
+                    keyword:'',
                     name:''
                 },
 
@@ -202,11 +210,23 @@
                 isLastPage(){
                     return this.currentPage === this.pages;
                 },
+                filteredProducts(){
+                    let products = this.products
+                    if(this.filter.keyword.length>0){
+                        let regxp = new RegExp(this.filter.keyword,'i')
+                        products =  products.filter(e =>
+                            e.name.match(regxp))
+            
+                    }
+                    return products
+                },
+
+
                 paginateProducts(){
                     let start = (this.currentPage - 1) * this.perPage
                     ,end = this.currentPage * this.perPage
 
-                    return this.products.slice(start, end)
+                    return this.filteredProducts.slice(start, end)
                 },
 
             },
