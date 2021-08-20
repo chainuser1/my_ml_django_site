@@ -5,7 +5,8 @@ from . import constants
 # Create your models here.
 
 class Preference(models.Model):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE, primary_key=True, default=1)
+    """Preferences of a customer """
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     product_name = models.CharField(null=True,max_length=250, unique=True)
     product_price = models.DecimalField(null= True,max_digits = 8, decimal_places=2)
