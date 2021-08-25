@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from survey_app.models import Category, Product, t_date
+from django.contrib.auth.middleware import get_user
 from . import constants 
 # Create your models here.
 

@@ -17,3 +17,6 @@ import json, time, numpy as np
 @login_required(login_url='login:login_do',   redirect_field_name='next')
 def index(request):
     return render(request, 'customers_site/home.html')
+
+def add_to_cart(request):
+    pass

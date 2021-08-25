@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Cart',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', default=1)),
                 ('created_at', models.BigIntegerField(default=1629442790000)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Preference',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', default=1)),
                 ('product_name', models.CharField(max_length=250, null=True, unique=True)),
                 ('product_price', models.DecimalField(decimal_places=2, max_digits=8, null=True)),
                 ('product_category', models.PositiveIntegerField(choices=[(7, 'Grains, Nuts, and Beans'), (8, 'Leafy Vegetables'), (9, 'Meat, Fish, and Poultry Products'), (10, 'Root Crops, Mushrooms'), (11, 'Fruits'), (12, 'Sugar & Sweeteners')], null=True)),
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CartItem',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID', default=1)),
                 ('quantity', models.IntegerField(default=1)),
                 ('price_ht', models.FloatField(blank=True)),
                 ('cart', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='customers_site.Cart')),
