@@ -8,7 +8,6 @@ app_name="customers"
 
 urlpatterns = [
     path('home/', views.index, name="home"),
-    # path('accounts/login', auth_views.LoginView.as_view(), name='login'),
-    # path('auth-create-lico', views.store, name='lico_store'),
     path('add_to_cart/', views.add_to_cart, name='add_to_cart'),
+    path('view_cart_item_list', views.view_cart_item_list, name="view_cart_item_list")
 ]

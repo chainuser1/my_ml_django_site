@@ -113,10 +113,9 @@
                         <a class="dropdown-item" href="#!" 
                         v-for="cartItem of cartObject.cartItems" >
                             <!-- <hr class="dropdown-divider" />   -->
-                            <span>Item:&nbsp;<strong v-text="cartItem.name"></strong></span><br>
-                            <span>Price:&nbsp; <em v-text="cartItem.price"></em></span> * <span><em v-text="cartItem.no_items"></em></span><br>
-                            <span><em>Amount:&nbsp;</em><strong v-text="cartItem.price * cartItem.no_items"></strong></span>
-                            <hr class="dropdown-divider" />  
+                            <span>Item:&nbsp;<strong v-text="cartItem.product[0]"></strong></span><br>
+                            <span>Price:&nbsp; <em v-text="cartItem.price_ht"></em></span> * <span><em v-text="cartItem.quantity"></em></span><br>
+                            <span><em>Amount:&nbsp;</em><strong v-text="cartItem.price_ht * cartItem.quantity"></strong></span>
                         </a>
                         
                     </li>

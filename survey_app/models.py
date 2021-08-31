@@ -10,6 +10,9 @@ class CategoryModel(models.Manager):
     def get_by_natural_key(self,name):
         return self.get(name=name)
 
+class ProductModel(models.Manager):
+    def get_by_natural_key(self,name):
+        return self.get(name=name)
 
 class Category(models.Model):
     name = models.CharField(null=False,max_length=250, unique=True)
@@ -39,8 +42,13 @@ class Product(models.Model):
     created_at =  models.BigIntegerField(default = t_date)
     updated_at = models.BigIntegerField(default = t_date)
 
+    objects = ProductModel()
     def __str__(self):
         return self.name
+    
+    def natural_key(self):
+        return (self.name, self.id)
+    
 
 
 class Log(models.Model):

@@ -5,6 +5,10 @@ from django.contrib.auth.middleware import get_user
 from . import constants 
 # Create your models here.
 
+class ItemModel(models.Manager):
+    def get_by_natural_key(self,name):
+        return self.get(name=name)
+
 class Preference(models.Model):
     """Preferences of a customer """
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
@@ -22,18 +26,24 @@ class Preference(models.Model):
 
 class Cart(models.Model):
     """Each user has his own cart"""
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     created_at =  models.BigIntegerField(default = t_date)
 
 
-class CartItem(models.Model):
+class Item(models.Model):
     """This is for each item in the cart"""
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     price_ht = models.FloatField(blank=True)
-    cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    objects = ItemModel()
+    class Meta:
+        verbose_name = 'item'
+        verbose_name_plural = 'items'
 
-
+    def natural_key(self):
+        return (self.name, self.id)
+        
     def price_ttc(self):
         return self.price_ht * (1 +  constants.TAX_AMOUNT/100.0)
 

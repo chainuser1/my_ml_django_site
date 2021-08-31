@@ -94,14 +94,14 @@ def show_logs(request):
 
 def products_list(request):
     products = Product.objects.all()
-    products = serialize('json',products, use_natural_foreign_keys=True, use_natural_primary_keys=True)
+    products = serialize('json',products, use_natural_foreign_keys=True)
     return JsonResponse({'products':json.loads(products)}, safe=False)
 
 
 @login_required(redirect_field_name='next', login_url = 'login:login_do')
 def show_numpy_data_products(requests):
     products =  Product.objects.all()
-    vlqs = products.values_list('name','category_id','price','stock')
+    vlqs = products.values_list('id','name','category_id','price','stock')
     my_list = list(vlqs)
     r = np.core.records.array(my_list)
     list1 = r.tolist()

@@ -26,6 +26,7 @@
                                     <p class="text-success fw-bolder" v-text="product.name"></p>
                                     
                                     <p class="text-muted fw-semi-bold">&#8369;{! product.price !}</p>
+                                    <p class="text-muted fw-semi-bold">ID:{! product.pk !}</p>
                                 </div>
                             </div>
                             <!-- Product actions-->
@@ -117,8 +118,9 @@
                     },
                     addToCart(){
                         if(this.counter>0 && this.counter<this.product.stock){
-                            notie.alert({type:'info',
-                                text:this.product.name + ' was added to cart'});
+                            // notie.alert({type:'info',
+                            //     text:this.product.name + ' was added to cart'});
+                            this.product.stock -= this.counter
                             this.$emit('add-to-cart',this.counter)
                         }
                         else{
@@ -157,7 +159,7 @@
             el:"#app",
             delimiters: ["{!","!}"],
             data : {
-                _token: "{{csrf_token}}",
+                
                 products: [
                      
                 ],
@@ -198,6 +200,7 @@
             mounted(){
                 $('.empty-stars').mdbRate();
                 this.fetchProducts()
+                this.fetchCartItems()
             },
             computed:{
                 
@@ -242,12 +245,23 @@
                         this.currentPage++;
                     }
                 },
+                fetchCartItems(){
+                    axios.get("{% url 'customers:view_cart_item_list'%}")
+                         .then((response) => {
+                             for(let i = 0; i< response.data.items.length; i++){
+                                 item =  response.data.items[i]
+                                 this.cartObject.cartItems.push(item.fields)
+                             }
+                             this.cartObject.cartCount = response.data.items.length
+                         })
+                },
                 fetchProducts(){
     
                     axios.get("{%url 'survey_app:products_list' %}").
                     then((response) => {
                         for(var i  = 0; i<response.data.products.length; i++){
                             item = response.data.products[i]
+                            
                             this.products.push(item.fields)
                      }
                     })
@@ -257,15 +271,21 @@
                 addToCart(product,x){
                     if (product.stock>0){
                         this.cartObject.cartCount++
-                        this.cartObject.cartItems.unshift({
-                            id:product.id,
-                            name:product.name,
-                            price:product.price,
-                            no_items:x,
-                        })
-                        this.product.stock =- x
+                        
+
+                        let form =  new FormData()
+                        form.append("csrfmiddlewaretoken", "{{csrf_token}}"),
+                        form.append("quantity",x)
+                        form.append("product", product.name)
+                        form.append("price",product.price)
+                        axios.post("{% url 'customers:add_to_cart'%}",form)
+                             .then((response) => {
+                                toastr["success"](response.data.message)
+                                this.fetchCartItems()
+                              })
+                       
                     }
-                    else{
+                    else{       
                         toastr["error"]("Product is not available")
                     }
                 },
